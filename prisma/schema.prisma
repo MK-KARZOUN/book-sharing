@@ -17,10 +17,5 @@ model Book {
   description String   @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  status      Status   @default(AVAILABLE)
-}
-
-enum Status {
-  AVAILABLE
-  UNAVAILABLE
+  status      Boolean  @default(true)
 }
