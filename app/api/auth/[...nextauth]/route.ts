@@ -32,10 +32,6 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        console.log(credentials)
-        const users = await prisma.user.findMany()
-        console.log(users)
-
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
@@ -67,13 +63,13 @@ export const authOptions: NextAuthOptions = {
       console.log("jwt callback", { token, user });
       return {
         ...token,
-        ...user
+        ...user,
       };
     },
     session: ({ session, token }) => {
       return {
         ...session,
-        ...token
+        ...token,
       };
     },
   },

@@ -1,27 +1,34 @@
-import Link from "next/link";
+"use client";
 import React from "react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import { IoBookSharp } from "react-icons/io5";
+
+const AuthButton = () => {
+  const { data: session } = useSession();
+  if (session?.user) {
+    return (
+      <div>
+        {session?.user?.name}
+        <button onClick={() => signOut()}>Sign out</button>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <Link href="../signin">Sign in</Link>
+      <Link href="../signup">Sign up</Link>
+    </div>
+  );
+};
+
 const NavBar = () => {
-  const Links = [
-    { label: "Sign in", href: "../auth/signin" },
-    { label: "Sign up", href: "../auth/signup" },
-  ];
   return (
     <nav className="flex justify-between items-center h-14 px-5 border-b mb-5">
       <Link href="/">
         <IoBookSharp />
       </Link>
-      <ul className="flex gap-5">
-        {Links.map((link) => (
-          <Link
-            key={link.href}
-            className="text-zinc-500 hover:text-zinc-800 transtiton-colors"
-            href={link.href}
-          >
-            {link.label}
-          </Link>
-        ))}
-      </ul>
+      <AuthButton />
     </nav>
   );
 };
