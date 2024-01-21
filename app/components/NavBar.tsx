@@ -3,8 +3,8 @@ import React from "react";
 import { IoBookSharp } from "react-icons/io5";
 const NavBar = () => {
   const Links = [
-    { label: "Sign in", href: "/signIn" },
-    { label: "Sign up", href: "/signUp" },
+    { label: "Sign in", href: "../auth/signin" },
+    { label: "Sign up", href: "../auth/signup" },
   ];
   return (
     <nav className="flex justify-between items-center h-14 px-5 border-b mb-5">

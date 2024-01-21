@@ -1,5 +1,7 @@
-export default function Home() {
+export default async function Home() {
   return (
-    <div>Hello World</div>
-  )
+    <div>
+      <h1>Hello</h1>
+    </div>
+  );
 }
