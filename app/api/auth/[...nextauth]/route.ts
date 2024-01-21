@@ -32,6 +32,10 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        console.log(credentials)
+        const users = await prisma.user.findMany()
+        console.log(users)
+
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
@@ -39,14 +43,14 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) {
-          console.log("email or password is incorrect");
+          console.log("email is incorrect");
           return null;
         }
 
         const isValid = await compare(credentials.password, user.password);
 
         if (!isValid) {
-          console.log("email or password is incorrect");
+          console.log("password is incorrect");
           return null;
         }
 
@@ -61,11 +65,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: ({ token, user }) => {
       console.log("jwt callback", { token, user });
-      return token;
+      return {
+        ...token,
+        ...user
+      };
     },
     session: ({ session, token }) => {
-      console.log("session callback", { session, token });
-      return session;
+      return {
+        ...session,
+        ...token
+      };
     },
   },
 };

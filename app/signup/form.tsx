@@ -1,41 +1,39 @@
 "use client";
 import React from "react";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface FormData {
   email: string;
   password: string;
-  name: string;
+  username: string;
 }
 
 const SignUpForm = () => {
-  const [formData, setFormData] = useState<FormData>({
-    email: "",
-    password: "",
-    name: "",
-  });
+
 
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const dataForm  = new FormData(e.currentTarget);
+    
     try {
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+         email: dataForm.get("email"),
+         password: dataForm.get("password"),
+         username: dataForm.get("username"),
+        }),
       });
 
       if (response.ok) {
-        router.push("../auth/signin");
+        router.push("/signin");
       } else {
         console.error("Sign-up failed:", response.statusText);
       }
@@ -46,29 +44,23 @@ const SignUpForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="name">name</label>
+      <label htmlFor="username">username</label>
       <input
         type="text"
-        id="name"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
+        id="username"
+        name="username"
       />
       <label htmlFor="email">Email</label>
       <input
         type="email"
         id="email"
         name="email"
-        value={formData.email}
-        onChange={handleChange}
       />
       <label htmlFor="password">Password</label>
       <input
         type="password"
         id="password"
         name="password"
-        value={formData.password}
-        onChange={handleChange}
       />
       <button type="submit">Sign Up</button>
     </form>
